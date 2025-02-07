@@ -1,9 +1,10 @@
 let mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema ({
+const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
+    minLength: 5,
     unique: true
   },
   firstName: {
@@ -11,19 +12,33 @@ const userSchema = new mongoose.Schema ({
     required: true
   },
   lastName: {
-    type: String,
-    required: true
+    type: String
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   passwordHash: {
-    type:String,
-    required: true
+    type: String,
+    minLength: 5
   },
-  dateCreated: Date
-})
+  dateCreated: Date,
+  profilePicture: {
+    type: String,
+    default: ""
+  },
+  follower: {
+    type: Array,
+    default: []
+
+  },
+  following: {
+    type: Array,
+    default: []
+  }
+},
+{ timestamps: true })
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
