@@ -8,6 +8,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const userRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const postsRouter = require('./controllers/posts')
 const middleware = require('./utils/middleware')
 
 const logger = require('./utils/logger')
@@ -40,7 +41,9 @@ app.use(middleware.tokenExtractor)
 
 
 app.use('/api/users', userRouter)
-app.use('/api/login',loginRouter)
+app.use('/api/login', loginRouter)
+app.use('/api/posts', postsRouter)
+
 
 // Error middleware
 app.use(middleware.unknownEndpoint)

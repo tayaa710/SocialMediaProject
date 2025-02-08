@@ -45,7 +45,11 @@ const userSchema = new mongoose.Schema({
   },
   country:{
     type: String
-  }
+  },
+  posts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Post'
+  }]
 },
 { timestamps: true })
 
