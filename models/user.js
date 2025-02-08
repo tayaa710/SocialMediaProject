@@ -28,14 +28,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
-  follower: {
-    type: Array,
-    default: []
-
+  followers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  description:{
+    type: String,
+    max:100
   },
-  following: {
-    type: Array,
-    default: []
+  city:{
+    type:String
+  },
+  country:{
+    type: String
   }
 },
 { timestamps: true })

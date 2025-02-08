@@ -10,21 +10,23 @@ const User = require('../models/user')
 const helper = require('./test_helper')
 
 beforeEach(async () => {
+
   await User.deleteMany({})
-  
+
   const passwordHash = await bcrypt.hash(helper.userToLogin.password, 10)
   const userObject = new User({
     ...helper.userToLogin,
+    email: "d",
     passwordHash,
     password: null, // Avoid storing plain-text password
   })
-
   await userObject.save()
 })
 
-describe('Login', () => {
+describe('Login', { concurrency: false }, () => {
   test('login succeeds with correct credentials', async () => {
     const user = await helper.userInDb()
+
     const loginData = {
       username: user.username,
       password: helper.userToLogin.password,
@@ -72,7 +74,6 @@ describe('Login', () => {
       .send(loginData)
       .expect(200)
       .expect('Content-Type', /application\/json/)
-
     assert.ok(loginResponse.body.token, 'Token should be defined')
   })
 })

@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const supertest = require('supertest')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 
 
 
@@ -8,7 +9,7 @@ const userToLogin = {
   username: "tayaa710",
   password: "testingtesting123",
   firstName: "testdfghd",
-  email:"test"
+  email: "test"
 }
 
 const logIn = (user) => {
@@ -16,7 +17,7 @@ const logIn = (user) => {
     username: user.username,
     id: user.id
   }
-return jwt.sign(userToken, process.env.SECRET)
+  return jwt.sign(userToken, process.env.SECRET)
 }
 
 const userInDb = async () => {
@@ -24,7 +25,6 @@ const userInDb = async () => {
   return users.map(user => user.toJSON())[0]
 }
 
-
 module.exports = {
-   userInDb, userToLogin,logIn
+  userInDb, userToLogin, logIn,logInAsDifferentUser
 }

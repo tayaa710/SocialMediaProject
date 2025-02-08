@@ -3,18 +3,24 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const User = require('../models/user')
 const assert = require('node:assert')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 
 beforeEach(async () => {
   await User.deleteMany({})
+  const passwordHash = await bcrypt.hash(helper.userToLogin.password, 10)
 
-  // Seed a user from helper.userToLogin.
-  // Assume helper.userToLogin is:
-  // { username: "tayaa710", password: "tesdfghdfghtasdf", firstName: "test", email:"test" }
-  const userObject = new User(helper.userToLogin)
+  const userObject = new User({
+    ...helper.userToLogin,
+    passwordHash,
+    password: null, // Avoid storing plain-text password
+  })
   await userObject.save()
+
+
 })
 
 describe("POST user", () => {
@@ -113,6 +119,7 @@ describe("POST user", () => {
     })
   })
 })
+
 
 after(async () => {
   await mongoose.connection.close()
